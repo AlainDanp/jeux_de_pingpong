@@ -18,4 +18,8 @@ public class  score extends Rectangle{
         g.drawString(String.valueOf(player1/10)+String.valueOf(player1%10),(GAME_HEIGHT/2)-85,50);
         g.drawString(String.valueOf(player2/10)+String.valueOf(player2%10),(GAME_WIDHT/2)+20,50);
     }
+    public void reset() {
+        player1 = 0;
+        player2 = 0;
+    }
 }

@@ -15,9 +15,10 @@ public class Gamepanel extends JPanel implements Runnable{
     static final int PADDLE_WIDTH = 24;
     static final int PADDLE_HEIGHT = 100;
     // Game State
-    public int gameState ;
-    public final int pauseState = 2;
-    public final int playState = 1;
+    public static final int pauseState = 0;
+    public static final int playState = 1;
+    public int gameState;
+
     Thread gameThread;
     Image image;
     Graphics graphics;
@@ -32,6 +33,7 @@ public class Gamepanel extends JPanel implements Runnable{
     Gamepanel(){
         newPaddles();
         newBall();
+        gameState = playState;
         score = new score(GAME_WIDTH,GAME_HEIGHT);
         this.setFocusable(true);
         this.addKeyListener(new AL());
@@ -67,6 +69,15 @@ public class Gamepanel extends JPanel implements Runnable{
         g.drawImage(image,0,0,this);
     }
     public void draw(Graphics g){
+        if (gameState == pauseState) {
+            Font font = new Font("Arial", Font.PLAIN, 45);
+            g.setFont(font);
+            g.setColor(Color.white);
+            FontMetrics fm = g.getFontMetrics();
+            int x = (GAME_WIDTH - fm.stringWidth("PAUSE")) / 2;
+            int y = GAME_HEIGHT / 2;
+            g.drawString("PAUSE", x, y);
+        }
         paddle1.draw(g);
         paddle2.draw(g);
         ball.draw(g);
@@ -108,6 +119,7 @@ public class Gamepanel extends JPanel implements Runnable{
             ball.setXDirection(-ball.xVelocity);
             ball.setYDirection(ball.yVelocity);
             playPaddleCollisionSound();
+
         }
 
     // arrête le Player de l'ecran //
@@ -132,7 +144,24 @@ public class Gamepanel extends JPanel implements Runnable{
             newBall();
             System.out.println("Player1"+score.player1);
         }
+        checkWin();
     }
+    public void checkWin() {
+        if (score.player1 == 4 || score.player2 == 4) {
+            String winner = (score.player1 == 7) ? "Player 1 a gagner !!" : "Player 2 a gagner !!";
+            int choice = JOptionPane.showConfirmDialog(this, winner + " Voulez vous rejouer ?", "Game Over", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                score.reset(); // Réinitialiser les scores
+                newPaddles(); // Réinitialiser les paddles
+                newBall(); // Réinitialiser la balle
+                gameState = playState; // Mettre le jeu en état de lecture
+            } else {
+                System.exit(0); // Quitter le jeu
+            }
+        }
+    }
+
+
     //son du jeu
     private void playPaddleCollisionSound(){
         if(paddleCollisionSound.isRunning()){
@@ -150,7 +179,7 @@ public class Gamepanel extends JPanel implements Runnable{
     }
 
     public void run(){
-        // game loop
+
         long lasTime = System.nanoTime();
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
@@ -160,15 +189,24 @@ public class Gamepanel extends JPanel implements Runnable{
            delta += (now -lasTime)/ns;
            lasTime = now;
            if(delta >=1) {
-               move();
-               checkcollision();
-               repaint();
+               if(gameState == playState){
+                   move();
+                   checkcollision();
+               }
                delta--;
+               repaint();
            }
         }
     }
     public class AL extends KeyAdapter{
         public void keyPressed (KeyEvent e){
+            if(e.getKeyCode() == KeyEvent.VK_P) {
+                if (gameState == playState) {
+                    gameState = pauseState; // Mettre le jeu en pause
+                } else if (gameState == pauseState) {
+                    gameState = playState; // Reprendre le jeu
+                }
+            }
             paddle1.keyPressed(e);
             paddle2.keyPressed(e);
         }
