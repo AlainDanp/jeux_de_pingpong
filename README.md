@@ -8,9 +8,9 @@ Il a été conçu à des fins pédagogiques dans le cadre de ma formation en inf
 ## 🎮 Fonctionnalités
 
 - 🕹️ Contrôle du joueur via le clavier
-- 💻 IA simple pour l’adversaire ou mode 2 joueurs
+- 💻 mode 2 joueurs
 - 🧠 Détection des collisions balle / raquettes / murs
-- 🔊 Effets sonores (optionnel)
+- 🔊 Effets sonores 
 - 🏆 Compteur de score en temps réel
 - 🎨 Interface graphique simple et fluide (Swing + AWT)
 
