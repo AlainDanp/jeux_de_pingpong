@@ -23,6 +23,3 @@ Il a été conçu à des fins pédagogiques dans le cadre de ma formation en inf
 - **OOP** : Programmation orientée objet
 
 ---
-
-## 📁 Structure du projet
-
