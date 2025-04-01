@@ -5,6 +5,8 @@ Il a été conçu à des fins pédagogiques dans le cadre de ma formation en inf
 
 ---
 
+![Apperçu du jeu](Image/Game.png)
+
 ## 🎮 Fonctionnalités
 
 - 🕹️ Contrôle du joueur via le clavier
